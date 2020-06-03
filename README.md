@@ -1,2 +1,2 @@
-# quizzler-flutter
+# quizzy-flutter
 A Quiz Application in Flutter
