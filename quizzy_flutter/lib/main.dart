@@ -25,6 +25,8 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [];
+
   Widget trueFlatButton() {
     return Expanded(
       child: Padding(
@@ -33,6 +35,9 @@ class _QuizPageState extends State<QuizPage> {
           color: Colors.green,
           onPressed: () {
             //The user picked true.
+            setState(() {
+              scoreKeeper.add(checkIcon());
+            });
           },
           child: Text(
             'True',
@@ -53,7 +58,9 @@ class _QuizPageState extends State<QuizPage> {
         child: FlatButton(
           color: Colors.red,
           onPressed: () {
-            //The user picked true.
+            setState(() {
+              scoreKeeper.add(crossIcon());
+            });
           },
           child: Text(
             'False',
@@ -86,6 +93,46 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
+  Widget clearButton() {
+    return Container(
+        alignment: Alignment.topRight,
+        child: ClipOval(
+          child: Material(
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  scoreKeeper.clear();
+                });
+              },
+              child: Icon(Icons.close),
+            ),
+          ),
+        ));
+  }
+
+  Icon checkIcon() {
+    return Icon(
+      Icons.check,
+      color: Colors.green,
+    );
+  }
+
+  Icon crossIcon() {
+    return Icon(
+      Icons.close,
+      color: Colors.red,
+    );
+  }
+
+  Widget scoreIcons() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: scoreKeeper,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,9 +140,11 @@ class _QuizPageState extends State<QuizPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          clearButton(),
           questionText(),
           trueFlatButton(),
           flaseFlatButton(),
+          scoreIcons(),
         ],
       ),
     );
