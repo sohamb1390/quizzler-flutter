@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'question.dart';
 
 void main() => runApp(Quizzy());
 
@@ -27,6 +28,24 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  // Questions
+  List<Question> questionBank = [
+    Question(
+      q: 'You can lead a cow down stairs but not up stairs',
+      a: false,
+    ),
+    Question(
+      q: 'Approximately one quarter of human bones are in the feet',
+      a: true,
+    ),
+    Question(
+      q: 'A slug\'s blood is green',
+      a: true,
+    )
+  ];
+
+  int questionNumber = 0;
+
   Widget trueFlatButton() {
     return Expanded(
       child: Padding(
@@ -36,7 +55,17 @@ class _QuizPageState extends State<QuizPage> {
           onPressed: () {
             //The user picked true.
             setState(() {
-              scoreKeeper.add(checkIcon());
+              if (questionBank[questionNumber].questionAnswer == true) {
+                scoreKeeper.add(checkIcon());
+              } else {
+                scoreKeeper.add(crossIcon());
+              }
+              questionNumber = questionNumber < (questionBank.length - 1)
+                  ? questionNumber + 1
+                  : 0;
+              if (questionNumber == 0) {
+                scoreKeeper.clear();
+              }
             });
           },
           child: Text(
@@ -59,7 +88,17 @@ class _QuizPageState extends State<QuizPage> {
           color: Colors.red,
           onPressed: () {
             setState(() {
-              scoreKeeper.add(crossIcon());
+              if (questionBank[questionNumber].questionAnswer == false) {
+                scoreKeeper.add(checkIcon());
+              } else {
+                scoreKeeper.add(crossIcon());
+              }
+              questionNumber = questionNumber < (questionBank.length - 1)
+                  ? questionNumber + 1
+                  : 0;
+              if (questionNumber == 0) {
+                scoreKeeper.clear();
+              }
             });
           },
           child: Text(
@@ -81,7 +120,7 @@ class _QuizPageState extends State<QuizPage> {
         padding: EdgeInsets.all(10.0),
         child: Center(
           child: Text(
-            'This is where the question text will go',
+            questionBank[questionNumber].questionText,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
